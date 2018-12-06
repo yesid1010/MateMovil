@@ -1,0 +1,18 @@
+page-detail {
+    iframe{
+        background: red;
+        width: 100%;
+        height: 100%;
+    }
+    img{
+        width: 100%;
+        height: 100%;
+    }
+    a{
+        pointer-events: none;
+        cursor: default;
+     }
+     .no_bullets{
+         display: none;
+     }
+}
