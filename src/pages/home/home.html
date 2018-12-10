@@ -3,20 +3,24 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>MateMovil</ion-title>
+    <ion-title><h5>MateMovil</h5></ion-title>
     <ion-buttons end>
       <button icon-only ion-button (click)="openSearchPage()"><ion-icon name = "search"></ion-icon></button>
+      <button icon-only ion-button (click)="iniciarsesion()"> <ion-icon md="md-contact"></ion-icon></button>
     </ion-buttons>
+    
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-refresher (ionRefresh)="getPost($event)">
+<ion-content >
+  <!-- <ion-refresher (ionRefresh)="getPost($event)">
     <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+  </ion-refresher> -->
 
-  <ion-card *ngFor="let item of items" (click)="openDetail(item)" >
-      <img *ngIf="item.img" src="{{item.img}}" alt="" srcset="">
+  <ion-card *ngFor="let item of items"   >
+      <!-- <img *ngIf="item.img" src="{{item.img}}" alt="" srcset=""(click)="openDetail(item)" /> -->
+      <img src="{{item._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url}}" (click)="openDetail(item)">
+      
     <ion-card-content>   
       <ion-card-title>
         <h2>{{item.title.rendered}}</h2>
@@ -28,10 +32,25 @@
         </ion-row>   
         <ion-row>
             <ion-col>
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="getComentario()" >
                 <ion-icon name="thumbs-up"></ion-icon>
                 <div>{{item.id}}</div>
               </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-start clear small (click)="getComentario()">
+                <ion-icon name="md-chatboxes"></ion-icon>
+                <div>{{item.id}}</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <ion-fab right bottom >
+                <button ion-fab  mini color="primary"><ion-icon name="md-share"></ion-icon></button>
+                <ion-fab-list side="left">
+                  <button ion-fab><ion-icon color="primary" name="logo-facebook"></ion-icon></button>
+                  <button ion-fab><ion-icon color="primary" name="logo-twitter"></ion-icon></button>
+                </ion-fab-list>
+              </ion-fab>
             </ion-col>
         </ion-row>
         
@@ -39,7 +58,64 @@
   </ion-card>
 
   
-  <ion-infinite-scroll (ionInfinite)="getPost($event)">
-      <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  <!-- <ion-infinite-scroll (ionInfinite)="getPost($event)">
+      <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+  <div *ngIf="isLoading" text-center padding>
+    
+  </div>
+  <button *ngIf="showLoadMore" ion-button full (click)="getPost()">
+    Cargar Mas..
+  </button>
 </ion-content>
+
+<!-- footer -->
+
+
+
+<!-- codigo get post -->
+
+
+
+
+<!-- 
+
+
+    getPost(infiniteScroll=null){
+    if(!this.isLoading){
+      this.isLoading = true;
+      if(infiniteScroll!=null && infiniteScroll.ionRefresh){
+          this.page=1;
+      }
+      this.wp.get('posts?_embed&per_page='+this.per_page +'&page='+this.page + (this.category_id!=0 ? '&categories='+this.category_id:''))
+     .subscribe((data:any)=>{
+        this.isLoading = false;  
+        this.items = infiniteScroll!=null && infiniteScroll.ionRefresh ? data : this.items.concat(data);
+
+        for(let item of this.items){
+          this.wp.gets(item.id).subscribe((data) => {
+              if(data[0]!=null)
+                item.img = data[0].source_url;
+          });
+        }
+        
+        if(data.length === this.per_page){
+          this.page++;
+        }
+
+        if(infiniteScroll!=null){
+          infiniteScroll.complete();
+        }
+
+      }, (error)=>{
+        this.isLoading = false;
+        if(infiniteScroll!=null){
+          infiniteScroll.complete();
+        }
+      });
+    }
+  }
+ -->

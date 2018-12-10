@@ -1,18 +1,28 @@
 page-detail {
     iframe{
-        background: red;
+        background:blue;
         width: 100%;
         height: 100%;
     }
     img{
-        width: 100%;
+        max-width: 100%;
         height: 100%;
+      
+    }
+    figure{
+        max-width: 100%;
+        padding-right: 15%
     }
     a{
-        pointer-events: none;
-        cursor: default;
+        // pointer-events: none;
+        // cursor: default;
      }
      .no_bullets{
          display: none;
+     }
+
+     
+     #contenido table{
+      display: none
      }
 }

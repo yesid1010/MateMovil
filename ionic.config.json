@@ -1,5 +1,7 @@
 {
   "name": "Romseo",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

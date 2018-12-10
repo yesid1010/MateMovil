@@ -12,6 +12,8 @@ export class WpProvider {
   private API_URL : string = 'https://matemovil.com/wp-json/wp/v2/';
   private url_img : string = 'https://matemovil.com/wp-json/wp/v2/media?parent=';
   public Categories:any = [];
+  private page:number=1;
+  private per_page : number=13;
   constructor(public http: HttpClient) {
   
   }
@@ -20,8 +22,16 @@ export class WpProvider {
   }
 
   getCategories(){
-    this.get('categories').subscribe((data)=>{
-      this.Categories = data;
+    let i = 0;
+    this.get('categories?_embed&per_page='+this.per_page)
+    .subscribe((data:any)=>{
+      for(i=0;i < data.length;i++){
+         if(data[i].count >= 0){
+          this.Categories[i] = data[i];
+          console.log(data[i].name)
+        }
+      }      
+
     })
   }
  

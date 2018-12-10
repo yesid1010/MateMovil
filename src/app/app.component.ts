@@ -34,6 +34,9 @@ export class MyApp {
   openPage(cat_id: number = 0) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
+    
     this.nav.setRoot(HomePage,{cat_id: cat_id});
   }
+
+
 }

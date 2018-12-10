@@ -8,10 +8,10 @@
   <ion-content>
     <ion-list no-lines>
       <button menuClose ion-item (click)="openPage(0)">
-          Todas
+          <span>Todas</span>
       </button>
       <button  menuClose ion-item *ngFor="let cat of wp.Categories" (click)="openPage(cat.id)">
-        {{cat.name}}
+        <span>{{cat.name}}</span>
         <ion-icon name="ios-paper-plane" item-end color="primary"></ion-icon>
       </button>
     </ion-list>
