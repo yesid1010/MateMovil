@@ -1,0 +1,69 @@
+<!--
+  Generated template for the RegistroPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <!-- <ion-content padding *ngIf="!login" >
+    <ion-input [(ngModel)]="correo"  type = "email"placeholder="email"></ion-input>
+    <ion-input [(ngModel)]="contrasena" type = "password" placeholder="contrasena"></ion-input>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+            <button ion-button full (click)="iniciar({correo:correo, contrasena:contrasena })">Iniciar sesion</button>
+        </ion-col>
+        <ion-col>
+            <button ion-button full color="secondary" (click)="registrar({correo:correo, contrasena:contrasena })"> Registrarse</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+</ion-content>
+ -->
+  <button ion-button full (click)="fblogin()">facebook</button> 
+  <button ion-button full round icon-end (click)="iniciarGoogle()"><ion-icon name="logo-google"></ion-icon>Iniciar con google</button>
+  <!-- <img [src]="users.img">
+  <p>{{info.id}}</p>
+  <p>{{info.name}}</p>
+  <p>{{info.email}}</p>
+  <p>{{info.firs_name}}</p> -->
+
+ <!--
+  <ion-input [(ngModel)]="name" placeholder="item name "></ion-input>
+  <ion-input [(ngModel)]="last" placeholder="item apellido "></ion-input>
+  <button ion-button full (click)="addItem({name:name, ape:last })">agregar</button>
+  
+  <ion-input [(ngModel)]="username" placeholder="usuario"></ion-input>
+  <ion-input [(ngModel)]="email" placeholder="email"></ion-input>
+  <ion-input [(ngModel)]="pass" placeholder="pass"></ion-input>
+  <button ion-button full (click)="add({email:email, username:username, pass:pass})">agregar</button>
+
+  <ion-list>
+    <ion-item *ngFor=" let item of items">
+      {{item.name}} {{item.ape}}
+      <ion-icon name="md-create" item-end color="primary" padding (click)="editItem(item.key)"></ion-icon>
+      <ion-icon name="md-trash" item-end color="danger" (click)="eliminarItem(item.key)"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <h1>ahora los de firestore</h1>
+
+  <ion-list padding>
+    <ion-item *ngFor=" let ite of items2">
+      {{ite.data().email}}
+      <ion-icon name="md-create" item-end color="primary"  padding ></ion-icon>
+      <ion-icon name="md-trash" item-end color="danger" (click)="deleteItems(ite.id)" ></ion-icon>
+    </ion-item>
+  </ion-list> -->
+
+</ion-content>

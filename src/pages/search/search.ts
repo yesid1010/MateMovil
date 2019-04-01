@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { WpProvider } from '../../providers/wp/wp';
 import { DetailPage } from '../detail/detail';
+import { SocialSharing } from '@ionic-native/social-sharing';
 /**
  * Generated class for the SearchPage page.
  *
@@ -17,27 +18,31 @@ import { DetailPage } from '../detail/detail';
 export class SearchPage {
   searchQuery : string = '';
   public items : any = [];
-  private per_page : number = 5;
+  private per_page : number = 10;
   private page : number = 1;
   private showLoadMore : boolean= false;
   private isLoading : boolean = false; 
   
-  constructor(public navCtrl: NavController, public navParams: NavParams,public wp : WpProvider) {
+  constructor(private alert : AlertController,  public navCtrl: NavController, public navParams: NavParams,public wp : WpProvider,private socialSharing:SocialSharing) {
     this.getPost();
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SearchPage');
   }
-  onSearch(){
-    this.items = [];
-    this.getPost();
+  // onSearch(){
+  //   this.items = [];
+  //   this.getPost();
+  // }
+
+  initializeItems(){
+    return  this.getPost();
   }
+
 
   getPost(){
     //if(!this.isLoading && this.searchQuery.length > 0){
       this.isLoading = true;
-      this.wp.get('posts?_embed&per_page='+this.per_page +'&page='+this.page+'&search='+this.searchQuery)
+      this.wp.get('posts?_embed&per_page='+this.per_page+'&search='+this.searchQuery)
       .subscribe((data:any)=>{
         this.isLoading = false;  
         this.items = this.items.concat(data);
@@ -65,12 +70,12 @@ export class SearchPage {
    // }
   }
 
-  clearSearch(){
-    this.searchQuery = '';
-    this.items = [];
-    this.page = 1;
-    this.showLoadMore=false;
-  }
+  // clearSearch(){
+  //   this.searchQuery = '';
+  //   this.items = [];
+  //   this.page = 1;
+  //   this.showLoadMore=false;
+  // }
 
   getCatName(cat_id : number){
     let cat_name : string = '';
@@ -82,6 +87,7 @@ export class SearchPage {
     return cat_name;
   }
 
+
   openDetail(item){
     this.navCtrl.push(DetailPage,{post : item});
   }
@@ -89,7 +95,8 @@ export class SearchPage {
 
   getItems(ev: any) {
     // Reset items back to all of the items
-    this.getPost();
+   // this.getPost();
+   this.initializeItems();
 
     // set val to the value of the searchbar
     const val = ev.target.value;
@@ -100,5 +107,21 @@ export class SearchPage {
         return (item.title.rendered.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
+  }
+
+  share(item_link:string=''){
+    this.socialSharing.share('','','',item_link)
+    .then(()=>{
+
+    }).catch(()=>{
+      
+    })
+  }
+  getComentario(){
+    const alerta = this.alert.create({
+      title:'debes iniciar sesion',
+      buttons: ['ok']
+    });
+    alerta.present();
   }
 }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+
 /*
   Generated class for the WpProvider provider.
 
@@ -9,11 +10,12 @@ import { Injectable } from '@angular/core';
 */
 @Injectable()
 export class WpProvider {
-  private API_URL : string = 'https://matemovil.com/wp-json/wp/v2/';
+  private API_URL : string = 'https://matemovil.com//wp-json/wp/v2/';
   private url_img : string = 'https://matemovil.com/wp-json/wp/v2/media?parent=';
+  private url_comentarios : string = 'https://matemovil.com/wp-json/wp/v2/comments?post=';
   public Categories:any = [];
-  private page:number=1;
   private per_page : number=13;
+
   constructor(public http: HttpClient) {
   
   }
@@ -39,4 +41,7 @@ export class WpProvider {
         return this.http.get(this.url_img+query);
   }
 
+  getComentario(query:any){
+    return this.http.get(this.url_comentarios+query);
+  }
 }

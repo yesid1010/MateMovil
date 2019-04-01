@@ -5,55 +5,53 @@
     </button>
     <ion-title><h5>MateMovil</h5></ion-title>
     <ion-buttons end>
+      <!-- *ngIf="!login" -->
       <button icon-only ion-button (click)="openSearchPage()"><ion-icon name = "search"></ion-icon></button>
-      <button icon-only ion-button (click)="iniciarsesion()"> <ion-icon md="md-contact"></ion-icon></button>
+      <button icon-only ion-button *ngIf="!login" (click)="inicioSesion()"> <ion-icon name='md-contact'></ion-icon></button>
     </ion-buttons>
     
   </ion-navbar>
 </ion-header>
 
 <ion-content >
-  <!-- <ion-refresher (ionRefresh)="getPost($event)">
+   <!-- <ion-refresher (ionRefresh)="getpost($event)">
     <ion-refresher-content></ion-refresher-content>
-  </ion-refresher> -->
+  </ion-refresher>  -->
 
   <ion-card *ngFor="let item of items"   >
-      <!-- <img *ngIf="item.img" src="{{item.img}}" alt="" srcset=""(click)="openDetail(item)" /> -->
-      <img src="{{item._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url}}" (click)="openDetail(item)">
+       <img *ngIf="item.img" src="{{item.img}}" alt="" srcset=""(click)="openDetail(item)" /> 
+      <!--<img *ngIf="item.img" src="{{item._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url}}" (click)="openDetail(item)">-->
       
     <ion-card-content>   
-      <ion-card-title>
+      <ion-card-title (click)="openDetail(item)">
         <h2>{{item.title.rendered}}</h2>
       </ion-card-title>
         <ion-row>
-            <ion-badge color="primary"> 
+            <ion-badge color="secondary"> 
               {{getCatName(item.categories[0])}}  
             </ion-badge>
         </ion-row>   
-        <ion-row>
-            <ion-col>
-              <button ion-button icon-start clear small (click)="getComentario()" >
-                <ion-icon name="thumbs-up"></ion-icon>
-                <div>{{item.id}}</div>
-              </button>
-            </ion-col>
-            <ion-col>
-              <button ion-button icon-start clear small (click)="getComentario()">
-                <ion-icon name="md-chatboxes"></ion-icon>
-                <div>{{item.id}}</div>
-              </button>
-            </ion-col>
-            <ion-col>
-              <ion-fab right bottom >
-                <button ion-fab  mini color="primary"><ion-icon name="md-share"></ion-icon></button>
-                <ion-fab-list side="left">
-                  <button ion-fab><ion-icon color="primary" name="logo-facebook"></ion-icon></button>
-                  <button ion-fab><ion-icon color="primary" name="logo-twitter"></ion-icon></button>
-                </ion-fab-list>
-              </ion-fab>
-            </ion-col>
-        </ion-row>
-        
+        <ion-grid>
+          <ion-row>
+              <ion-col col-4>
+                <button ion-button icon-start clear  (click)="getLike()" >
+                  <ion-icon name="thumbs-up"></ion-icon>
+                  <div>{{item.id}}</div>
+                </button>
+              </ion-col>
+              <ion-col col-4>
+                <button ion-button icon-start clear  (click)="getComentario()">
+                  <ion-icon name="md-chatboxes"></ion-icon>
+                  <div><span class="fb-comments-count" data-href="https://www.facebook.com/noticiaslatinas1010/"></span></div>
+                </button>
+              </ion-col>
+              <ion-col col-4>
+                  <button ion-button icon-start clear  color="primary" (click)="share(item.link)">
+                      <ion-icon name="md-share"></ion-icon>
+                  </button>
+              </ion-col>
+          </ion-row>
+        </ion-grid> 
     </ion-card-content>
   </ion-card>
 
@@ -67,14 +65,30 @@
   <div *ngIf="isLoading" text-center padding>
     
   </div>
-  <button *ngIf="showLoadMore" ion-button full (click)="getPost()">
+  <button *ngIf="showLoadMore" ion-button full padding (click)="getPost()">
     Cargar Mas..
   </button>
 </ion-content>
 
 <!-- footer -->
 
-
+<ion-footer>
+    
+      <ion-grid>
+        <ion-row justify-content-center>
+            <ion-col  col-4>
+              <a href="https://www.youtube.com/user/MateMovil1" ion-button round small color="rojo"><ion-icon  md="logo-youtube"></ion-icon></a>
+            </ion-col>
+            <ion-col col-4>
+                <a href="https://twitter.com/matemovil1" ion-button round  small color="primary"><ion-icon  md="logo-twitter"></ion-icon></a>
+              </ion-col>
+            <ion-col col-4 >
+                <a href="https://www.facebook.com/MateMovil" ion-button round small color="azul"><ion-icon  md="logo-facebook"></ion-icon></a>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    
+  </ion-footer>
 
 <!-- codigo get post -->
 

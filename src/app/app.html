@@ -6,6 +6,33 @@
   </ion-header>
 
   <ion-content>
+
+    <!-- info usuario -->
+      <ion-card color="primary" *ngIf="login">
+          <ion-card-header>
+           {{username}}
+          </ion-card-header>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                  <ion-avatar item-start>
+                      <img  id = "img-perfil" src="{{foto}}">
+                  </ion-avatar>
+              </ion-col>
+              <ion-col>
+                  <button  menuClose ion-item color="primary" (click)="cerrar()">
+                      <span>Cerrar Sesion</span>
+                      <ion-icon name="md-power" item-end color="dark"></ion-icon>
+                    </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+
+         
+        </ion-card>
+  <!-- info usuario -->
+
     <ion-list no-lines>
       <button menuClose ion-item (click)="openPage(0)">
           <span>Todas</span>

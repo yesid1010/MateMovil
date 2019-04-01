@@ -1,9 +1,11 @@
 import { Component ,Provider} from '@angular/core';
-import { NavController,NavParams, AlertController } from 'ionic-angular';
+import { NavController,NavParams, AlertController, Button } from 'ionic-angular';
 import { WpProvider } from '../../providers/wp/wp';
 import { DetailPage } from '../detail/detail';
 import { SearchPage } from '../search/search';
-
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { RegistroPage } from '../registro/registro';
+import *as firebase from 'firebase';
 
 @Component({
   selector: 'page-home',
@@ -17,14 +19,21 @@ export class HomePage {
   private showLoadMore : boolean= false;
   private isLoading : boolean = false;
   private category_id: number = 0;
-  private sort:string = '0';
-  private count : boolean = false;
-  constructor(public navCtrl: NavController,public wp: WpProvider,public navParams:NavParams,public alert:AlertController) {
+
+  private aut = firebase.auth();
+
+
+  login : boolean = false;
+  constructor(public navCtrl: NavController,public wp: WpProvider,
+    public navParams:NavParams,public alert:AlertController,private socialSharing: SocialSharing) {
+
+      this.observador();
     if(this.navParams.get('cat_id')!=null && this.navParams.get('cat_id') != undefined){
       this.category_id = this.navParams.get('cat_id');
     }
 
      this.getPost();
+
   }
 
 
@@ -87,35 +96,103 @@ export class HomePage {
     this.page=1;
     this.getPost();
   }
+
+
   // alertas
 
   getComentario(){
-    const alerta = this.alert.create({
-      title:'debes iniciar sesion',
-      buttons: ['ok']
-    });
-    alerta.present();
+    if(!this.login){
+      const alerta = this.alert.create({
+        title:'debes iniciar sesion',
+        buttons: ['ok']
+      });
+      alerta.present();
+    }else{
+      const alerta = this.alert.create({
+        title : 'comentar',
+        inputs : [
+          {
+            name : 'comentario',
+            placeholder:'comentar'
+          }
+        ],
+        buttons:[
+          {
+            text : 'comentar',
+            handler: data =>{
+              console.log(data.comentario);
+            }
+          }
+        ]
+      })
+      alerta.present();
+    }
+
   }
 
-  iniciarsesion(){
-    const prompt = this.alert.create({
-      title: 'Login',
-      message: "Iniciar sesion con facebook",
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
+
+  getLike(){
+    if(!this.login){
+      const alerta = this.alert.create({
+        title:'debes iniciar sesion',
+        buttons: ['ok']
+      });
+      alerta.present();
+    }else{
+    let alert = this.alert.create({
+        title:'Aun no disponible',
+        buttons: [
+          {
+            text : 'ok',
+            role: 'cancel'
           }
-        },
+        ]
+    })
+    .present();
+  }
+  }
+
+
+  // funcion para compartir las entradas por redes sociales
+  share(item_link:string=''){
+    this.socialSharing.share('','','',item_link)
+    .then(()=>{
+
+    }).catch(()=>{
+      
+    })
+  }
+
+  // funcion para redirigir a la pagina de inicio de sesion
+  inicioSesion(){
+    this.navCtrl.push(RegistroPage);
+  }
+
+/// funcion para ver el estado del login 
+  observador(){  
+    this.aut.onAuthStateChanged((user)=> {
+      if (user) {
+        this.login = true;
+        let email = user.email;
+        let username = user.displayName;
+        let uid = user.uid;
+        this.addUser({username,email,uid});
+      }else 
         {
-          text: 'ok', 
-          handler: data => {
-            console.log('ok')
-          }
+          this.login = false;
         }
-      ]
-    });
-    prompt.present();
+    }); 
   }
+
+  /// agregar usuarios registrados a la base de datos
+    addUser(user){ 
+      let usuario = {
+        uid : user.uid,
+        username : user.username,
+        email : user.email
+      }
+      firebase.database().ref("users/"+user.uid)
+      .set(usuario);
+    }
   }
+
